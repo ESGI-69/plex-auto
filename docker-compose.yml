@@ -1,0 +1,117 @@
+version: '3.8'
+
+services: 
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Paris
+      PUID: 501 # for UserID / default = 1000
+      PGID: 20 # for GroupID / default = 1000
+    volumes:
+      - ./configs/overseerr:/app/config
+    ports:
+        - 5055:5055/tcp
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Paris
+      PUID: 501 # for UserID / default = 1000
+      PGID: 20 # for GroupID / default = 1000
+    volumes:
+      - ./configs/radarr:/config
+      - ./medias/movies:/movies
+      - ./downloads:/downloads
+    ports:
+      - 7878:7878
+  
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Paris
+      PUID: 501 # for UserID / default = 1000
+      PGID: 20 # for GroupID / default = 1000
+    volumes:
+      - ./configs/sonarr:/config
+      - ./medias/series:/series
+      - ./medias/animes:/animes
+      - ./downloads:/downloads
+    ports:
+      - 8989:8989
+  
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Paris
+      PUID: 501 # for UserID / default = 1000
+      PGID: 20 # for GroupID / default = 1000
+    volumes:
+      - ./configs/bazarr:/config
+      - ./medias/series:/series
+      - ./medias/animes:/animes
+      - ./medias/movies:/movies
+    ports:
+      - 6767:6767
+
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Paris
+      PUID: 501 # for UserID / default = 1000
+      PGID: 20 # for GroupID / default = 1000
+    volumes:
+      - ./configs/deluge:/config
+      - ./downloads:/downloads
+    ports:
+      - 8112:8112
+      - 6881:6881
+      - 6881:6881/udp
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Paris
+      PUID: 501 # for UserID / default = 1000
+      PGID: 20 # for GroupID / default = 1000
+    volumes:
+      - ./configs/prowlarr:/config
+    ports:
+      - 9696:9696
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    restart: unless-stopped
+    #network_mode: host # work only on linux
+    environment:
+      PUID: 501 # for UserID / default = 1000
+      PGID: 20 # for GroupID / default = 1000
+      VERSION: docker
+    volumes:
+      - ./configs/plex:/config
+      - ./medias/series:/series
+      - ./medias/animes:/animes
+      - ./medias/movies:/movies
+    ports:
+      - 32400:32400
+      - 1900:1900/udp
+      - 3005:3005
+      - 5352:5353/udp # 5353 used by _mdnsresponder on MAC
+      - 8324:8324
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+      - 32469:32469
