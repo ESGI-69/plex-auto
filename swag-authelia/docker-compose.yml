@@ -6,15 +6,15 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Paris
-      - URL=timdev0.com
-      - SUBDOMAINS=wildcard
-      - VALIDATION=dns
-      - DNSPLUGIN=cloudflare
-      - DUCKDNSTOKEN=<token>
-      - EMAIL=tim89140@gmail.com
+      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      TZ: Europe/Paris
+      URL: timdev0.com
+      SUBDOMAINS: wildcard
+      VALIDATION: dns
+      DNSPLUGIN: cloudflare
+      DUCKDNSTOKEN: <token>
+      EMAIL: tim89140@gmail.com
     volumes:
       - ./../configs/swag:/config
     ports:

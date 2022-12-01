@@ -7,8 +7,9 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-      PUID: 501 # for UserID / default = 1000
-      PGID: 20 # for GroupID / default = 1000
+       # useless on windows
+       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/overseerr:/app/config
     ports:
@@ -20,12 +21,13 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-      PUID: 501 # for UserID / default = 1000
-      PGID: 20 # for GroupID / default = 1000
+       # useless on windows
+       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/radarr:/config
       - ./medias/movies:/movies
-      - ./downloads:/downloads
+      - ./download:/download
     ports:
       - 7878:7878
   
@@ -35,13 +37,14 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-      PUID: 501 # for UserID / default = 1000
-      PGID: 20 # for GroupID / default = 1000
+       # useless on windows
+       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/sonarr:/config
       - ./medias/series:/series
       - ./medias/animes:/animes
-      - ./downloads:/downloads
+      - ./download:/download
     ports:
       - 8989:8989
   
@@ -51,8 +54,9 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-      PUID: 501 # for UserID / default = 1000
-      PGID: 20 # for GroupID / default = 1000
+       # useless on windows
+       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/bazarr:/config
       - ./medias/series:/series
@@ -67,12 +71,13 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-      PUID: 501 # for UserID / default = 1000
-      PGID: 20 # for GroupID / default = 1000
+       # useless on windows
+       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
       OPENVPN_PROVIDER: PIA
       OPENVPN_CONFIG: switzerland
-      OPENVPN_USERNAME: ${PIA_USER}
-      OPENVPN_PASSWORD: ${PIA_PASS}
+      OPENVPN_USERNAME: ${VPN_USER}
+      OPENVPN_PASSWORD: ${VPN_PASS}
       LOCAL_NETWORK: 192.168.0.0/16
     cap_add:
       - NET_ADMIN
@@ -80,7 +85,7 @@ services:
      - net.ipv6.conf.all.disable_ipv6=1
     volumes:
       - ./configs/deluge:/config
-      - ./downloads:/downloads
+      - ./download:/download
     ports:
       - 8112:8112
       - 6881:6881
@@ -92,8 +97,9 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-      PUID: 501 # for UserID / default = 1000
-      PGID: 20 # for GroupID / default = 1000
+       # useless on windows
+       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/prowlarr:/config
     ports:
@@ -104,9 +110,17 @@ services:
     container_name: plex
     restart: unless-stopped
     #network_mode: host # work only on linux
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
     environment:
-      PUID: 501 # for UserID / default = 1000
-      PGID: 20 # for GroupID / default = 1000
+       # useless on windows
+       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
       VERSION: docker
     volumes:
       - ./configs/plex:/config
@@ -117,14 +131,14 @@ services:
       - 32400:32400
       - 1900:1900/udp
       - 3005:3005
-      - 5352:5353/udp # 5353 used by _mdnsresponder on MAC
+      - 5353:5353/udp # 5353 used by _mdnsresponder on MAC
       - 8324:8324
       - 32410:32410/udp
       - 32412:32412/udp
       - 32413:32413/udp
       - 32414:32414/udp
       - 32469:32469
-# networks:
-#   swag:
-#     external: true
-#     name: swag
+networks:
+  swag:
+    external: true
+    name: swag
