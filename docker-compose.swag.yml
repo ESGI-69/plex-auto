@@ -9,14 +9,13 @@ services:
       PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
       PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
       TZ: Europe/Paris
-      URL: timdev0.com
+      URL: ${SWAG_DOMAIN}
       SUBDOMAINS: wildcard
       VALIDATION: dns
       DNSPLUGIN: cloudflare
-      DUCKDNSTOKEN: <token>
-      EMAIL: tim89140@gmail.com
+      EMAIL: ${SWAG_EMAIL}
     volumes:
-      - ./../configs/swag:/config
+      - ./configs/swag:/config
     ports:
       - 443:443
     restart: unless-stopped
