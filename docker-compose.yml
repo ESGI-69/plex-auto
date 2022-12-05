@@ -8,8 +8,8 @@ services:
     environment:
       TZ: Europe/Paris
       # useless on windows
-      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/overseerr:/app/config
     ports:
@@ -24,8 +24,8 @@ services:
     environment:
       TZ: Europe/Paris
       # useless on windows
-      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/radarr:/config
       - ./medias/movies:/movies
@@ -43,8 +43,8 @@ services:
     environment:
       TZ: Europe/Paris
       # useless on windows
-      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/sonarr:/config/sonarr
       - ./medias/series:/series
@@ -63,8 +63,8 @@ services:
     environment:
       TZ: Europe/Paris
       # useless on windows
-      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/bazarr:/config
       - ./medias/series:/series
@@ -83,8 +83,8 @@ services:
     environment:
       TZ: Europe/Paris
       # useless on windows
-      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
       OPENVPN_PROVIDER: PIA
       OPENVPN_CONFIG: switzerland
       OPENVPN_USERNAME: ${VPN_USER}
@@ -109,8 +109,8 @@ services:
     environment:
       TZ: Europe/Paris
       # useless on windows
-      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/prowlarr:/config
     ports:
@@ -128,8 +128,8 @@ services:
             - capabilities: [gpu]
     environment:
       # useless on windows
-      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
       VERSION: docker
