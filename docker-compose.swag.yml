@@ -6,8 +6,8 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
       TZ: Europe/Paris
       URL: timdev0.com
       SUBDOMAINS: wildcard
@@ -24,6 +24,3 @@ services:
 networks:
   swag:
     name: swag
-
-
-
