@@ -7,13 +7,15 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-       # useless on windows
-       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      # useless on windows
+      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/overseerr:/app/config
     ports:
         - 5055:5055/tcp
+    depends_on:
+      - plex
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -21,15 +23,18 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-       # useless on windows
-       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      # useless on windows
+      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/radarr:/config
       - ./medias/movies:/movies
       - ./download:/download
     ports:
       - 7878:7878
+    depends_on:
+      - deluge
+      - prowlarr
   
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -37,16 +42,19 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-       # useless on windows
-       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      # useless on windows
+      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
-      - ./configs/sonarr:/config
+      - ./configs/sonarr:/config/sonarr
       - ./medias/series:/series
       - ./medias/animes:/animes
       - ./download:/download
     ports:
       - 8989:8989
+    depends_on:
+      - deluge
+      - prowlarr
   
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -54,9 +62,9 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-       # useless on windows
-       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      # useless on windows
+      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/bazarr:/config
       - ./medias/series:/series
@@ -64,6 +72,9 @@ services:
       - ./medias/movies:/movies
     ports:
       - 6767:6767
+    depends_on:
+      - sonarr
+      - radarr
 
   deluge:
     image: ebrianne/docker-deluge-openvpn
@@ -71,9 +82,9 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-       # useless on windows
-       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      # useless on windows
+      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
       OPENVPN_PROVIDER: PIA
       OPENVPN_CONFIG: switzerland
       OPENVPN_USERNAME: ${VPN_USER}
@@ -97,9 +108,9 @@ services:
     restart: unless-stopped
     environment:
       TZ: Europe/Paris
-       # useless on windows
-       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      # useless on windows
+      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
     volumes:
       - ./configs/prowlarr:/config
     ports:
@@ -116,9 +127,9 @@ services:
           devices:
             - capabilities: [gpu]
     environment:
-       # useless on windows
-       #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-       #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      # useless on windows
+      #PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
+      #PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
       VERSION: docker
@@ -131,7 +142,7 @@ services:
       - 32400:32400
       - 1900:1900/udp
       - 3005:3005
-      - 5353:5353/udp # 5353 used by _mdnsresponder on MAC
+      - 5352:5353/udp # 5353 used by _mdnsresponder on MAC
       - 8324:8324
       - 32410:32410/udp
       - 32412:32412/udp
