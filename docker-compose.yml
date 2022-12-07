@@ -6,10 +6,9 @@ services:
     container_name: overseerr
     restart: unless-stopped
     environment:
-      TZ: Europe/Paris
-      # useless on windows
-      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      TZ: ${TIMEZONE}
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
     volumes:
       - ./configs/overseerr:/app/config
     ports:
@@ -22,10 +21,9 @@ services:
     container_name: radarr
     restart: unless-stopped
     environment:
-      TZ: Europe/Paris
-      # useless on windows
-      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      TZ: ${TIMEZONE}
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
     volumes:
       - ./configs/radarr:/config/sonarr
       - ./medias/movies:/movies
@@ -41,10 +39,9 @@ services:
     container_name: sonarr
     restart: unless-stopped
     environment:
-      TZ: Europe/Paris
-      # useless on windows
-      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      TZ: ${TIMEZONE}
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
     volumes:
       - ./configs/sonarr:/config/sonarr
       - ./medias/series:/series
@@ -61,10 +58,9 @@ services:
     container_name: bazarr
     restart: unless-stopped
     environment:
-      TZ: Europe/Paris
-      # useless on windows
-      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      TZ: ${TIMEZONE}
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
     volumes:
       - ./configs/bazarr:/config
       - ./medias/series:/series
@@ -81,10 +77,9 @@ services:
     container_name: deluge
     restart: unless-stopped
     environment:
-      TZ: Europe/Paris
-      # useless on windows
-      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      TZ: ${TIMEZONE}
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
       OPENVPN_PROVIDER: PIA
       OPENVPN_CONFIG: switzerland
       OPENVPN_USERNAME: ${VPN_USER}
@@ -107,10 +102,9 @@ services:
     container_name: prowlarr
     restart: unless-stopped
     environment:
-      TZ: Europe/Paris
-      # useless on windows
-      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      TZ: ${TIMEZONE}
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
     volumes:
       - ./configs/prowlarr:/config
     ports:
@@ -127,9 +121,8 @@ services:
           devices:
             - capabilities: [gpu]
     environment:
-      # useless on windows
-      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
       VERSION: docker
@@ -142,13 +135,14 @@ services:
       - 32400:32400
       - 1900:1900/udp
       - 3005:3005
-      - 5352:5353/udp # 5353 used by _mdnsresponder on MAC
+      - 5353:5353/udp # 5353 used by _mdnsresponder on MAC
       - 8324:8324
       - 32410:32410/udp
       - 32412:32412/udp
       - 32413:32413/udp
       - 32414:32414/udp
       - 32469:32469
+
 networks:
   swag:
     external: true

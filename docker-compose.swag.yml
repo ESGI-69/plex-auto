@@ -6,9 +6,9 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      PUID: ${USER_ID} # for UserID / default = 1000 / mac = 501
-      PGID: ${GROUP_ID} # for GroupID / default = 1000 / mac = 20
-      TZ: Europe/Paris
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
+      TZ: ${TIMEZONE}
       URL: ${SWAG_DOMAIN}
       SUBDOMAINS: wildcard
       VALIDATION: dns
@@ -24,7 +24,7 @@ services:
     image: authelia/authelia
     container_name: authelia
     environment:
-      - TZ=Europe/Paris
+      TZ: ${TIMEZONE}
     volumes:
       - ./configs/authelia:/config
     restart: unless-stopped
