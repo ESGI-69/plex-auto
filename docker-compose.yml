@@ -25,7 +25,7 @@ services:
       PUID: ${USER_ID}
       PGID: ${GROUP_ID}
     volumes:
-      - ./configs/radarr:/config/sonarr
+      - ./configs/radarr:/config
       - ./medias/movies:/movies
       - ./download:/download
     ports:
@@ -109,6 +109,20 @@ services:
       - ./configs/prowlarr:/config
     ports:
       - 9696:9696
+    depends_on:
+      - flaresolverr
+
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      LOG_LEVEL: info
+      LOG_HTML: false
+      CAPTCHA_SOLVER: none
+      TZ: ${TIMEZONE}
+    ports:
+      - 8191:8191
+    restart: unless-stopped
 
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -135,7 +149,7 @@ services:
       - 32400:32400
       - 1900:1900/udp
       - 3005:3005
-      - 5353:5353/udp # 5353 used by _mdnsresponder on MAC
+      - 5352:5353/udp # 5353 used by _mdnsresponder on MAC
       - 8324:8324
       - 32410:32410/udp
       - 32412:32412/udp
