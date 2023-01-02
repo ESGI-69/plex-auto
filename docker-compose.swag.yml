@@ -19,6 +19,8 @@ services:
     ports:
       - 443:443
     restart: unless-stopped
+    networks:
+      - swag
   
   authelia:
     image: authelia/authelia
@@ -28,7 +30,10 @@ services:
     volumes:
       - ./configs/authelia:/config
     restart: unless-stopped
+    networks:
+      - swag
 
 networks:
   swag:
     name: swag
+    driver: bridge

@@ -15,6 +15,9 @@ services:
         - 5055:5055/tcp
     depends_on:
       - plex
+    networks:
+      - plex-auto
+      - swag
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -33,6 +36,9 @@ services:
     depends_on:
       - deluge
       - prowlarr
+    networks:
+      - plex-auto
+      - swag
   
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -52,6 +58,9 @@ services:
     depends_on:
       - deluge
       - prowlarr
+    networks:
+      - plex-auto
+      - swag
   
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -71,6 +80,10 @@ services:
     depends_on:
       - sonarr
       - radarr
+    networks:
+      - plex-auto
+      - swag
+      
 
   deluge:
     image: ebrianne/docker-deluge-openvpn
@@ -96,6 +109,9 @@ services:
       - 8112:8112
       - 6881:6881
       - 6881:6881/udp
+    networks:
+      - plex-auto
+      - swag
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
@@ -111,6 +127,8 @@ services:
       - 9696:9696
     depends_on:
       - flaresolverr
+    networks:
+      - plex-auto
 
   flaresolverr:
     image: flaresolverr/flaresolverr:latest
@@ -123,6 +141,8 @@ services:
     ports:
       - 8191:8191
     restart: unless-stopped
+    networks:
+      - plex-auto
 
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -156,8 +176,15 @@ services:
       - 32413:32413/udp
       - 32414:32414/udp
       - 32469:32469
+    networks:
+      - plex-auto
+      - swag
 
 networks:
+  plex-auto:
+    name: plex-auto
+    driver: bridge
   swag:
     external: true
     name: swag
+    driver: bridge
