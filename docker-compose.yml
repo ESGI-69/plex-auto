@@ -129,6 +129,7 @@ services:
       - flaresolverr
     networks:
       - plex-auto
+      - swag
 
   flaresolverr:
     image: flaresolverr/flaresolverr:latest
