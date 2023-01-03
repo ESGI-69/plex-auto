@@ -49,7 +49,7 @@ services:
       PUID: ${USER_ID}
       PGID: ${GROUP_ID}
     volumes:
-      - ./configs/sonarr:/config/sonarr
+      - ./configs/sonarr:/config
       - ./medias/series:/series
       - ./medias/animes:/animes
       - ./download:/download
@@ -105,6 +105,9 @@ services:
     volumes:
       - ./configs/deluge:/config
       - ./download:/download
+      - ./medias/series:/series
+      - ./medias/animes:/animes
+      - ./medias/movies:/movies
     ports:
       - 8112:8112
       - 6881:6881
