@@ -86,7 +86,7 @@ services:
       
 
   deluge:
-    image: timdev0/docker-deluge-openvpn:master
+    image: ebrianne/docker-deluge-openvpn
     container_name: deluge
     restart: unless-stopped
     environment:
@@ -98,14 +98,6 @@ services:
       OPENVPN_USERNAME: ${VPN_USER}
       OPENVPN_PASSWORD: ${VPN_PASS}
       LOCAL_NETWORK: 192.168.0.0/16
-      DELUGE_INCOMPLETE_DIR: /download # or /dowload/incomplete # its default folder
-      DELUGE_MOVE_COMPLETED: false
-      #DELUGE_DOWNLOAD_DIR: /download/completed #optional put DELUGE_MOVE_COMPLETED to true
-      COPY_TORRENT_FILE: true
-      DELUGE_TORRENT_DIR: /download/torrents #optional put COPY_TORRENT_FILE to true
-      # DELUGE_WATCH_DIR: /download/watch #optional
-      # DELUGE_WEB_PORT: 8112 #optinal
-      # DELUGE_DEAMON_PORT: 58846 #optional
     cap_add:
       - NET_ADMIN
     sysctls:
