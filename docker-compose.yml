@@ -86,7 +86,7 @@ services:
       
 
   deluge:
-    image: ebrianne/docker-deluge-openvpn
+    image: timdev0/docker-deluge-openvpn:master
     container_name: deluge
     restart: unless-stopped
     environment:
